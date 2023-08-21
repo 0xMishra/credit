@@ -1,4 +1,6 @@
+import Link from 'next/link'
 import { Icons } from './Icons'
+import UserAuthForm from './UserAuthForm'
 
 const SignIn = () => {
   return (
@@ -12,6 +14,17 @@ const SignIn = () => {
         </p>
 
         {/* sign in form */}
+        <UserAuthForm />
+
+        <p className='px-8 text-center text-sm text-zinc-700'>
+          New to Credit?{' '}
+          <Link
+            className='hover:text-zinc-800 text-sm underline underline-offset-4'
+            href={'/sign-up'}
+          >
+            Sign up
+          </Link>
+        </p>
       </div>
     </div>
   )
