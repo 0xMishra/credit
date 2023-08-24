@@ -1,4 +1,5 @@
 'use client'
+
 import { cn } from '@/lib/utils'
 import { Button } from './ui/Button'
 import { useState } from 'react'
@@ -13,7 +14,8 @@ const UserAuthForm = () => {
   const loginWithGoogle = async () => {
     setIsLoading(true)
     try {
-      await signIn('google')
+      const result = await signIn('google')
+      console.log(result)
     } catch (error) {
       // toast notification
       toast({
@@ -21,7 +23,7 @@ const UserAuthForm = () => {
         description: 'There was a problem logging in with google',
         variant: 'destructive',
       })
-      console.log(error)
+      console.log('checkpoint')
     } finally {
       setIsLoading(false)
     }
