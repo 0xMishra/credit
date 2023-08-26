@@ -11,7 +11,7 @@ interface PageProps {
 }
 export default async function page({ params }: PageProps) {
   const { slug } = params
-  const session = getAuthSession()
+  const session = await getAuthSession()
 
   const subreddit = await db.subreddit.findFirst({
     where: {
@@ -38,7 +38,8 @@ export default async function page({ params }: PageProps) {
         {' '}
         r/{subreddit.name}
       </h1>
-      <MiniCreatePost />
+      <MiniCreatePost session={session || null} />
+      {/* show posts in your feed */}
     </>
   )
 }
