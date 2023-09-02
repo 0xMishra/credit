@@ -14,6 +14,7 @@ import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 
 import '@/styles/editor.css'
+import { Button } from './ui/Button'
 
 type FormData = z.infer<typeof PostValidator>
 
@@ -40,7 +41,7 @@ export const Editor: React.FC<EditorProps> = ({ subredditId }) => {
   const [isMounted, setIsMounted] = useState<boolean>(false)
   const pathname = usePathname()
 
-  const { mutate: createPost } = useMutation({
+  const { mutate: createPost, isLoading: isPosCreateLoading } = useMutation({
     mutationFn: async ({
       title,
       content,
@@ -105,6 +106,7 @@ export const Editor: React.FC<EditorProps> = ({ subredditId }) => {
                 async uploadByFile(file: File) {
                   // upload to uploadthing
                   const [res] = await uploadFiles([file], 'imageUploader')
+                  console.log(res.fileUrl)
 
                   return {
                     success: 1,
@@ -210,6 +212,16 @@ export const Editor: React.FC<EditorProps> = ({ subredditId }) => {
           </p>
         </div>
       </form>
+      <div className='w-full flex justify-end'>
+        <Button
+          isLoading={isPosCreateLoading}
+          type='submit'
+          className='w-full'
+          form='subreddit-post-form'
+        >
+          Post
+        </Button>
+      </div>
     </div>
   )
 }
