@@ -45,11 +45,12 @@ export const PostFeed: FC<PostFeedProps> = ({
     },
   )
 
-  // useEffect(() => {
-  //   if (entry.isIntersecting) {
-  //     fetchNextPage()
-  //   }
-  // }, [entry, fetchNextPage])
+  useEffect(() => {
+    if (entry?.isIntersecting) {
+      fetchNextPage()
+    }
+  }, [entry, fetchNextPage])
+
   const posts = data?.pages.flatMap((page) => page) ?? initialPosts
 
   return (
