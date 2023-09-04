@@ -65,7 +65,7 @@ export default async function Layout({
           <div className='hidden md:block overflow-hidden h-fit rounded-lg border border-gray-200 order-first md:order-last'>
             <div className='px-6 py-4'>
               <p className='font-semibold py-3'>
-                <Link href={`/r/${subreddit.name}`}>
+                <Link href={`/r/${subreddit.name}`} className='underline'>
                   About r/{subreddit.name}
                 </Link>
               </p>

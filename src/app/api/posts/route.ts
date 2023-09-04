@@ -47,8 +47,10 @@ export const GET = async (req: Request) => {
       }
     } else if (session) {
       whereClause = {
-        id: {
-          in: followedCommunitiesIds,
+        subreddit: {
+          id: {
+            in: followedCommunitiesIds,
+          },
         },
       }
     }
