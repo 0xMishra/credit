@@ -35,7 +35,6 @@ export async function POST(req: Request) {
         subredditId: subreddit.id,
       },
     })
-    console.log(subreddit.name)
     return new Response(subreddit.name)
   } catch (error) {
     if (error instanceof ZodError) {

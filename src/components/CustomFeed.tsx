@@ -1,11 +1,11 @@
-import React from "react";
-import { PostFeed } from "./PostFeed";
-import { getAuthSession } from "@/lib/auth";
-import { db } from "@/lib/db";
-import { INFINITE_SCROLLING_PAGINATION_RESULTS } from "@/config";
+import React from 'react'
+import { PostFeed } from './PostFeed'
+import { getAuthSession } from '@/lib/auth'
+import { db } from '@/lib/db'
+import { INFINITE_SCROLLING_PAGINATION_RESULTS } from '@/config'
 
 const CustomFeed = async () => {
-  const session = await getAuthSession();
+  const session = await getAuthSession()
 
   const followedCommunities = await db.subscription.findMany({
     where: {
@@ -14,7 +14,7 @@ const CustomFeed = async () => {
     include: {
       subreddit: true,
     },
-  });
+  })
 
   const posts = await db.post.findMany({
     where: {
@@ -25,7 +25,7 @@ const CustomFeed = async () => {
       },
     },
     orderBy: {
-      createdAt: "desc",
+      createdAt: 'desc',
     },
     include: {
       votes: true,
@@ -34,9 +34,9 @@ const CustomFeed = async () => {
       comments: true,
     },
     take: INFINITE_SCROLLING_PAGINATION_RESULTS,
-  });
+  })
 
-  return <PostFeed initialFetchedPosts={posts} />;
-};
+  return <PostFeed initialFetchedPosts={posts} />
+}
 
-export default CustomFeed;
+export default CustomFeed

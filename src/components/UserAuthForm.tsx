@@ -23,7 +23,6 @@ const UserAuthForm = () => {
         description: 'There was a problem logging in with google',
         variant: 'destructive',
       })
-      console.log('checkpoint')
     } finally {
       setIsLoading(false)
     }
