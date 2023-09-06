@@ -10,13 +10,6 @@ interface PostVoteServerProps {
   getData?: () => Promise<(Post & { votes: Vote[] }) | null>
 }
 
-/**
- * We split the PostVotes into a client and a server component to allow for dynamic data
- * fetching inside of this component, allowing for faster page loads via suspense streaming.
- * We also have to option to fetch this info on a page-level and pass it in.
- *
- */
-
 const PostVoteServer = async ({
   postId,
   initialVotesAmt,
