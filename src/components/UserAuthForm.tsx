@@ -15,7 +15,6 @@ const UserAuthForm = () => {
     setIsLoading(true)
     try {
       const result = await signIn('google')
-      console.log(result)
     } catch (error) {
       // toast notification
       toast({
