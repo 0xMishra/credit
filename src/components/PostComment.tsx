@@ -9,6 +9,11 @@ import { MessageSquare } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { Label } from './ui/Label'
+import { Textarea } from './ui/Textarea'
+import { useMutation } from '@tanstack/react-query'
+import { CommentRequest } from '@/lib/validators/comment'
+import { toast } from '@/hooks/use-toast'
+import axios from 'axios'
 
 type ExtendedComment = Comment & {
   votes: CommentVote[]
@@ -21,12 +26,42 @@ interface PostCommentProps {
   postId: string
 }
 
-const PostComment = ({ comment, votesAmt, currentVote }: PostCommentProps) => {
+const PostComment = ({
+  comment,
+  votesAmt,
+  currentVote,
+  postId,
+}: PostCommentProps) => {
   const commentRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
   const { data: session } = useSession()
   const [isReplying, setIsReplying] = useState<boolean>(false)
 
+  const [input, setInput] = useState<string>('')
+  const { mutate: postComment, isLoading } = useMutation({
+    mutationFn: async ({ text, replyToId, postId }: CommentRequest) => {
+      const payload: CommentRequest = {
+        postId,
+        replyToId,
+        text,
+      }
+
+      const { data } = await axios.patch('/api/subreddit/post/comment', payload)
+      return data
+    },
+    onError: () => {
+      return toast({
+        title: 'Something went wrong.',
+        description: "Comment wasn't created successfully. Please try again.",
+        variant: 'destructive',
+      })
+    },
+    onSuccess: () => {
+      router.refresh()
+      setInput('')
+      setIsReplying(false)
+    },
+  })
   return (
     <div className='flex flex-col' ref={commentRef}>
       <div className='flex items-center'>
@@ -47,7 +82,7 @@ const PostComment = ({ comment, votesAmt, currentVote }: PostCommentProps) => {
         </div>
       </div>
       <p className='text-sm text-zinc-900 mt-2'>{comment.text}</p>
-      <div className='flex gap-2 items-center'>
+      <div className='flex gap-2 items-center flex-wrap'>
         <CommentVotes
           commentId={comment.id}
           initialVotesAmt={votesAmt}
@@ -66,7 +101,40 @@ const PostComment = ({ comment, votesAmt, currentVote }: PostCommentProps) => {
         </Button>
         {isReplying ? (
           <div className='grid w-full gap-1.5'>
-            <Label>Your comment</Label>
+            <div className='grid w-full gap-1.5'>
+              <Label htmlFor='comment'>Your comment</Label>
+              <div className='mt-2'>
+                <Textarea
+                  id='comment'
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  rows={1}
+                  placeholder='What are your thoughts'
+                />
+                <div className='mt-2 flex justify-end'>
+                  <Button
+                    tabIndex={-1}
+                    variant={'subtle'}
+                    onClick={() => setIsReplying(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      postComment({
+                        postId,
+                        text: input,
+                        replyToId: comment.replyToId ?? comment.id,
+                      })
+                    }}
+                    isLoading={isLoading}
+                    disabled={input.length === 0}
+                  >
+                    Post
+                  </Button>
+                </div>
+              </div>
+            </div>
           </div>
         ) : null}
       </div>
