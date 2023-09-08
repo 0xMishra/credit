@@ -4,8 +4,8 @@ const nextConfig = {
     domains: ['uploadthing.com', 'lh3.googleusercontent.com'],
   },
   experimental: {
-    appDir: true
-  }
+    appDir: true,
+  },
 }
 
 module.exports = nextConfig
