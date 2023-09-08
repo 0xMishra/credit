@@ -28,6 +28,7 @@ const style = {
 
 const EditorOutput: FC<EditorOutputProps> = ({ content }) => {
   return (
+    // @ts-ignore
     <Output
       style={style}
       className='text-sm'
