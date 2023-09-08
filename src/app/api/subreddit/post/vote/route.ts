@@ -1,11 +1,7 @@
 import { getAuthSession } from '@/lib/auth'
 import { db } from '@/lib/db'
-import { redis } from '@/lib/redis'
 import { PostVoteValidator } from '@/lib/validators/vote'
-import { CachePost } from '@/types/redis'
 import { ZodError } from 'zod'
-
-const CACHE_AFTER_UPVOTE = 1
 
 export async function PATCH(req: Request) {
   try {
@@ -59,24 +55,6 @@ export async function PATCH(req: Request) {
         },
       })
 
-      // recount the votes
-      const votesAmt = post.votes.reduce((acc, vote) => {
-        if (vote.type === 'UP') return acc + 1
-        if (vote.type === 'DOWN') return acc - 1
-        return acc
-      }, 0)
-
-      if (votesAmt >= CACHE_AFTER_UPVOTE) {
-        const cachePayload: CachePost = {
-          authorUsername: post.author.username ?? '',
-          content: JSON.stringify(post.content),
-          id: post.id,
-          title: post.title,
-          createdAt: post.createdAt,
-          currentVote: voteType,
-        }
-        await redis.hset(`post:${postId}`, cachePayload)
-      }
       return new Response('OK')
     }
 
@@ -88,23 +66,6 @@ export async function PATCH(req: Request) {
       },
     })
 
-    const votesAmt = post.votes.reduce((acc, vote) => {
-      if (vote.type === 'UP') return acc + 1
-      if (vote.type === 'DOWN') return acc - 1
-      return acc
-    }, 0)
-
-    if (votesAmt >= CACHE_AFTER_UPVOTE) {
-      const cachePayload: CachePost = {
-        authorUsername: post.author.username ?? '',
-        content: JSON.stringify(post.content),
-        id: post.id,
-        title: post.title,
-        createdAt: post.createdAt,
-        currentVote: voteType,
-      }
-      await redis.hset(`post:${postId}`, cachePayload)
-    }
     return new Response('OK')
   } catch (error) {
     if (error instanceof ZodError)

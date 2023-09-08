@@ -4,7 +4,6 @@ export async function GET(req: Request) {
   const url = new URL(req.url)
   const q = url.searchParams.get('q')
   if (!q) return new Response('invalid query', { status: 400 })
-  console.log(q)
   const results = await db.subreddit.findMany({
     where: {
       name: {
@@ -16,6 +15,5 @@ export async function GET(req: Request) {
     },
     take: 5,
   })
-  console.log(results)
   return new Response(JSON.stringify(results))
 }
