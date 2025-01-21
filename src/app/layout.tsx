@@ -1,34 +1,35 @@
-import Navbar from '@/components/Navbar'
-import { Providers } from '@/components/Providers'
-import { Toaster } from '@/components/ui/Toaster'
-import { cn } from '@/lib/utils'
-import '@/styles/globals.css'
-import { Inter } from 'next/font/google'
+import Navbar from "@/components/Navbar";
+import { Providers } from "@/components/Providers";
+import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/Toaster";
+import { cn } from "@/lib/utils";
+import "@/styles/globals.css";
+import { Inter } from "next/font/google";
 
 export const metadata = {
-  title: 'Credit',
-  description: 'A Reddit clone built with Next.js and TypeScript.',
-}
+  title: "Credit",
+  description: "A Reddit clone built with Next.js and TypeScript.",
+};
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
   children,
   authModal,
 }: {
-  children: React.ReactNode
-  authModal: React.ReactNode
+  children: React.ReactNode;
+  authModal: React.ReactNode;
 }) {
   return (
     <html
-      lang='en'
+      lang="en"
       className={cn(
-        'bg-white text-slate-900 antialiased light',
+        "bg-white text-slate-900 antialiased light",
         inter.className,
       )}
     >
       <body
-        className='min-h-screen pt-12 bg-slate-50 antialiased'
+        className="min-h-screen pt-12 bg-slate-50 antialiased"
         suppressHydrationWarning
       >
         <Providers>
@@ -37,7 +38,7 @@ export default function RootLayout({
 
           {authModal}
 
-          <div className='container max-w-7xl mx-auto h-full pt-12 '>
+          <div className="container max-w-7xl mx-auto h-full pt-12 ">
             {children}
           </div>
 
@@ -45,5 +46,5 @@ export default function RootLayout({
         </Providers>
       </body>
     </html>
-  )
+  );
 }
