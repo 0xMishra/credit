@@ -1,6 +1,5 @@
 import Navbar from "@/components/Navbar";
 import { Providers } from "@/components/Providers";
-import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/Toaster";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
